@@ -1,14 +1,14 @@
 package org.example;
 
 public class Vol {
-    private int numeroDuVol;
+    private int numeroDuVol = 0;
     private String destination;
     private Date dateDepart;
     private int numeroAvion;
     private int reservation;
 
-    Vol(String destination, Date dateDepart, int numeroAvion, int reservation) {
-        this.numeroDuVol = 0;
+    Vol(int numeroDuVol, String destination, Date dateDepart, int numeroAvion, int reservation) {
+        this.numeroDuVol = numeroDuVol;
         this.destination = destination;
         this.dateDepart = dateDepart;
         this.numeroAvion = numeroAvion;

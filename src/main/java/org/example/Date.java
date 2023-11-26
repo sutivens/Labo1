@@ -7,45 +7,48 @@ public class Date {
     private int mois;
     private int an;
 
-    static public String tabMois[] = {null, "Janvier", "Février", "Mars", "Avril", "Mai," "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Decembre"};
+    static public String tabMois[] = {null, "Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Aoét", "Septembre", "Octobre", "Novembre", "Décembre"};
     static public LocalDate dateActuelle = LocalDate.now();
 
-    Date() {
+    public Date() {
         jour = mois = 1;
-        an = 1990;
-
+        an = 2000;
     }
 
-    Date(int jour, int mois, int an) {
-        super();
+    public Date(int jour, int mois, int an) {
         this.jour = jour;
         this.mois = mois;
         this.an = an;
     }
 
+    // Les méthodes set et get habituelles
     public int getJour() {
-        return jour;
+        return this.jour;
     }
 
     public int getMois() {
-        return mois;
+        return this.mois;
     }
 
     public int getAn() {
-        return an;
+        return this.an;
     }
 
-    public static String validerDate(int jour, int mois, int an, boolean etat[]) {
-        String message = "";
+    //Valider trois
+    public static String validerDate(int jour, int mois, int an) {
+        String message = "";//Servira comme message par défaut
+        boolean[] etat = new boolean[3];
         int nbJours = 0;
 
-        if(mois < 1 || mois > 12) {
+        //Valider le mois
+        if (mois < 1 || mois > 12) {
             etat[1] = false;
-            message += "Mois " + mois + " n'est pas un mois valide [1-12]" + "\n";
+            message += "Mois " + mois + " n'est un mois valide [1-12]" + "\n";
         } else {
             etat[1] = true;
         }
 
+        //Valider le jour
         if (etat[1]) {
             nbJours = determinerNbJoursMois(mois, an);
             if (jour > nbJours || jour <= 0) {
@@ -59,22 +62,77 @@ public class Date {
             message += "Impossible de valider le jour puisque votre mois est invalide";
         }
 
+        //Valider Année
         int anneActuelle = dateActuelle.getYear();
         if (an < anneActuelle) {
             etat[2] = false;
-            message += "Annee " + an + " ne peut pas etre inferieure a lanne actuelle, soit " + anneActuelle;
+            message += "Année " + an + " ne peut pas étre inférieure à l'année actuelle, soit " + anneActuelle + "\n";
         } else {
             etat[2] = true;
         }
         return message;
     }
 
-    public validerDateReservation(Date dateReservation) {
-        // Valider si dateReservation est <= dateActuelle;
+    public static boolean validerDateReservation(Date dateReservation) {
+        boolean etatDate = true;
+        if (dateReservation.getMois() < dateActuelle.getMonthValue()) {
+            etatDate = false;
+        } else if (dateReservation.getJour() < dateActuelle.getDayOfMonth()) {
+            etatDate = false;
+        }
+        return etatDate;
     }
 
-
-    public String toString() { // On va voir ca en classe pour la validation
-        return this.jour + "/" + this.mois + "/" + this.an;
+    public void setJour(int jour) {
+        int nbJours = determinerNbJoursMois(this.mois, this.an);
+        if (jour > nbJours || jour < 1) {
+            System.out.println("Jour invalide pour le mois de " + tabMois[this.mois].toLowerCase());
+        } else {
+            this.jour = jour;
+        }
     }
-}
+
+    public void setMois(int mois) {
+        int nbJours;
+        if (mois < 1 || mois > 12) {
+            System.out.println("Mois " + mois + " n'est un mois valide [1-12]");
+        } else {
+            nbJours = determinerNbJoursMois(mois, this.an);
+            if (this.jour > nbJours) {
+                System.out.println("Mois " + tabMois[mois].toLowerCase() + " n'est un mois valide pour le jour actuel du vol qu'est " + this.jour);
+            } else {
+                this.mois = mois;
+            }
+        }
+    }
+
+    public void setAn(int an) {
+        int anneActuelle = dateActuelle.getYear();
+        if (an < anneActuelle) {
+            System.out.println("Année " + an + " ne peut pas étre inférieure é l'année actuelle, soit " + anneActuelle);
+        } else {
+            this.an = an;
+        }
+    }
+
+    public static boolean estBissextile(int an) {
+        return (an % 4 == 0 && an % 100 != 0) || (an % 400 == 0);
+    }
+
+    public static int determinerNbJoursMois(int mois, int an) {
+        int nbJours;
+        int tabJrMois[] = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+        if (mois == 2 && estBissextile(an))
+            nbJours = 29;
+        else
+            nbJours = tabJrMois[mois];
+        return nbJours;
+    }
+
+    public String toString() {
+        String leJour, leMois;
+        leJour = Utilitaires.ajouterCaractereGauche('0', 2, this.jour + "");
+        leMois = Utilitaires.ajouterCaractereGauche('0', 2, this.mois + "");
+        return leJour + "/" + leMois + "/" + this.an;
+    }
+} // fin de la classe Date
