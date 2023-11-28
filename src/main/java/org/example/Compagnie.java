@@ -136,18 +136,10 @@ public class Compagnie {
     public void listerVols() {
         JTextArea jtaContenu = new JTextArea();
         String resultat = "\t\tLISTE DES VOLS\n";
-        resultat += "Numéro\t" + Utilitaires.ajouterEspaces(20, "Destination", 'F') + "\tDate départ\tRéservations\n";
+        resultat += "Numéro\t" + Utilitaires.ajouterEspaces(20, "Destination", 'F') + "\tDate départ\tNumero avion\tRéservations\n";
         for (int i = 0; i < nombreVolsActifs; i++) {
-            String extraTabulation = "\t";
 
-            if (listeVols.get(i).getDestination().length() >= 16) { // La date se décalait quand la destination avait une longueur d'au moins 16 caractères... Alors j'ai du trouver un petit fix temporaire
-                extraTabulation = "";
-            }
-
-            resultat += listeVols.get(i).getNumeroDuVol() + "\t"
-                    + listeVols.get(i).getDestination() + "\t" + extraTabulation
-                    + listeVols.get(i).getDateDepart() + "\t"
-                    + listeVols.get(i).getReservation() + "\n";
+            resultat += listeVols.get(i).toString() + "\n";
 
         }
 
