@@ -5,7 +5,9 @@ import jdk.jshell.execution.Util;
 import javax.swing.*;
 import java.awt.*;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.util.ArrayList;
 
 
@@ -61,7 +63,9 @@ public class Compagnie {
                 String inputMonth = JOptionPane.showInputDialog(null, "Saisir le mois du départ:", this.nom, JOptionPane.QUESTION_MESSAGE);
                 String inputYear = JOptionPane.showInputDialog(null, "Saisir l'année du départ:", this.nom, JOptionPane.QUESTION_MESSAGE);
 
-                if (Date.validerDate(Integer.parseInt(inputDay), Integer.parseInt(inputMonth), Integer.parseInt(inputYear)).isEmpty()) { // Si la validation ne donne pas des messages d'erreurs
+                String messageValidation = Date.validerDate(Integer.parseInt(inputDay), Integer.parseInt(inputMonth), Integer.parseInt(inputYear));
+
+                if (messageValidation.isEmpty()) { // Si la validation ne donne pas des messages d'erreurs
                     String inputPlaneNumber = JOptionPane.showInputDialog(null, "Saisir le numéro de l'avion:", this.nom, JOptionPane.QUESTION_MESSAGE);
                     idx = 0;
                     boolean valid = true;
@@ -74,11 +78,15 @@ public class Compagnie {
                     }
 
                     if (valid) {
-                        Vol vol = new Vol(Integer.parseInt(inputNumber), inputName, new Date(Integer.parseInt(inputDay), Integer.parseInt(inputMonth), Integer.parseInt(inputYear)), Integer.parseInt(inputPlaneNumber), 0);
-                        placeAtRightPosition(vol);
+                        Vol vol = new Vol(Integer.parseInt(inputNumber), inputName, new Date(Integer.parseInt(inputDay), Integer.parseInt(inputMonth), Integer.parseInt(inputYear)), Integer.parseInt(inputPlaneNumber), 0); // Pour le mettre dans le ArrayList
+                        placeAtRightPosition(vol); // Pour le mettre à la bonne place basé sur son numéro de vol
+                        BufferedWriter writeFile = new BufferedWriter(new FileWriter("src/main/java/org/example/donnees/Cie_Air_Relax.txt",true));
+                        writeFile.write(vol.getNumeroDuVol() + ";" + vol.getDestination() + ";" + vol.getDateDepart().getJour() + ";" + vol.getDateDepart().getMois() + ";" + vol.getDateDepart().getAn() + ";" + vol.getNumeroDeAvion() + ";" + vol.getReservation() + "\n"); // Ajout au fichier
+                        writeFile.close();
+                        nombreVolsActifs++;
                     }
                 } else {
-                    JOptionPane.showMessageDialog(null, "Date invalide", this.nom, JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, messageValidation, this.nom, JOptionPane.ERROR_MESSAGE);
                 }
             }
         } catch (Exception e) {
@@ -102,14 +110,8 @@ public class Compagnie {
             int idx = rechercherVol(Integer.parseInt(inputNumber));
             if (idx != -1) {
                 JTextArea jtaContenu = new JTextArea();
-                String resultat = Utilitaires.ajouterEspaces(20, "Destination", 'F') + "\tDate départ\tRéservations\n";
-
-                String extraTabulation = "\t";
-
-                if (listeVols.get(idx).getDestination().length() >= 16) { // La date se décalait quand la destination avait une longueur d'au moins 16 caractères... Alors j'ai du trouver un petit fix temporaire
-                    extraTabulation = "";
-                }
-                resultat += listeVols.get(idx).getDestination() + "\t" + extraTabulation
+                String resultat = Utilitaires.ajouterEspaces(20, "Destination", 'F') + "\tDate départ\tRéservations\t\t\n";
+                resultat += Utilitaires.ajouterEspaces(30,listeVols.get(idx).getDestination(),'F') + "\t"
                         + listeVols.get(idx).getDateDepart() + "\t"
                         + listeVols.get(idx).getReservation() + "\n"
                         + "\nDésirez-vous vraiment retirer ce vol (O/N) ?";
@@ -120,6 +122,13 @@ public class Compagnie {
                 if (inputConfirm.equals("O")) {
                     listeVols.remove(idx);
                     nombreVolsActifs--;
+                    BufferedWriter writeFile = new BufferedWriter(new FileWriter("src/main/java/org/example/donnees/Cie_Air_Relax.txt"));
+                    for (int i = 0; i < listeVols.size(); i++) { // Reécrire le fichier sans le vol enlevé
+                        String line = listeVols.get(i).getNumeroDuVol() + ";" + listeVols.get(i).getDestination() + ";" + listeVols.get(i).getDateDepart().getJour() + ";" + listeVols.get(i).getDateDepart().getMois() + ";" + listeVols.get(i).getDateDepart().getAn() + ";" + listeVols.get(i).getNumeroDeAvion() + ";" + listeVols.get(i).getReservation() + "\n";
+                        writeFile.write(line);
+                    }
+                    writeFile.close();
+
                     JOptionPane.showMessageDialog(null, "Ce vol a été enlevé", this.nom, JOptionPane.PLAIN_MESSAGE);
                 } else {
                     JOptionPane.showMessageDialog(null, "Il n'y a eu aucun changement", this.nom, JOptionPane.PLAIN_MESSAGE);
@@ -137,7 +146,7 @@ public class Compagnie {
         JTextArea jtaContenu = new JTextArea();
         String resultat = "\t\tLISTE DES VOLS\n";
         resultat += "Numéro\t" + Utilitaires.ajouterEspaces(20, "Destination", 'F') + "\tDate départ\tNumero avion\tRéservations\n";
-        for (int i = 0; i < nombreVolsActifs; i++) {
+        for (int i = 0; i < listeVols.size(); i++) {
 
             resultat += listeVols.get(i).toString() + "\n";
 

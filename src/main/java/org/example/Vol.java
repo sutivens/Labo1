@@ -44,6 +44,6 @@ public class Vol {
     }
 
     public String toString() {
-        return this.numeroDuVol + "\t" + Utilitaires.ajouterEspaces(30,this.destination,'F') + "\t" + this.dateDepart + "\t" + this.numeroAvion + "\t" + this.reservation;
+        return this.numeroDuVol + "\t" + Utilitaires.ajouterEspaces(30,this.destination,'F') + "\t" + this.dateDepart + "\t" + this.numeroAvion + "\t" + this.reservation + "\t";
     }
 }
