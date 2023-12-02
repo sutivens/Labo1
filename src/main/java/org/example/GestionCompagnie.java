@@ -40,11 +40,11 @@ public class GestionCompagnie implements Serializable {
                     compagnie.retirerVol(input);
                     break;
                 case "4":
-                    input = JOptionPane.showInputDialog(null,"Numéro du vol:","Retrait d'un vol", JOptionPane.QUESTION_MESSAGE);
+                    input = JOptionPane.showInputDialog(null,"Numéro du vol:","MODIFICATION DE LA DATE DE DÉPART", JOptionPane.QUESTION_MESSAGE);
                     compagnie.modifierDate(input);
                     break;
                 case "5":
-                    input = JOptionPane.showInputDialog(null,"Numéro du vol:","Retrait d'un vol", JOptionPane.QUESTION_MESSAGE);
+                    input = JOptionPane.showInputDialog(null,"Numéro du vol:","RÉSERVATION D'UN VOL", JOptionPane.QUESTION_MESSAGE);
                     compagnie.reserverVol(input);
                     break;
                 case "0":
