@@ -1,9 +1,12 @@
 package org.example;
 
 import javax.swing.*;
-import java.awt.*;
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
 
-public class GestionCompagnie {
+public class GestionCompagnie implements Serializable {
     public static void main(String[] args) throws Exception {
         String nomCompagnie = JOptionPane.showInputDialog(null, "Entrez le nom de la compagnie:", "", JOptionPane.QUESTION_MESSAGE);
 
@@ -21,6 +24,7 @@ public class GestionCompagnie {
         String content = "GESTION DES VOLS\n1. Lister des vols\n2. Ajout d'un vol\n3. Retrait d'un vol\n4. Modification de la date de départ\n5. Réservation d'un vol\n0. Terminer\nFaites votre choix: : ";
 
         while (!end) {
+            Collections.sort(compagnie.getListeVols());
             String input = JOptionPane.showInputDialog(null, content, compagnie.getNom(), JOptionPane.QUESTION_MESSAGE);
 
             switch (input) {
@@ -36,12 +40,19 @@ public class GestionCompagnie {
                     compagnie.retirerVol(input);
                     break;
                 case "4":
-                    modifierDate();
+                    input = JOptionPane.showInputDialog(null,"Numéro du vol:","Retrait d'un vol", JOptionPane.QUESTION_MESSAGE);
+                    compagnie.modifierDate(input);
                     break;
                 case "5":
-                    reserverVol();
+                    input = JOptionPane.showInputDialog(null,"Numéro du vol:","Retrait d'un vol", JOptionPane.QUESTION_MESSAGE);
+                    compagnie.reserverVol(input);
                     break;
                 case "0":
+                    try {
+                        Utilitaires.sauvegarderFichierObjets(compagnie.getListeVols(), "src/main/java/org/example/donnees/Cie_Air_Relax.obj");
+                    } catch (IOException e) {
+                        System.out.println(e);
+                    }
                     Utilitaires.displayMessage("Merci d'avoir utilisé notre application", compagnie.getNom());
                     end = true;
                     break;
@@ -51,13 +62,5 @@ public class GestionCompagnie {
             }
         }
     }
-
-    public static void reserverVol() {
-    }
-
-    public static void modifierDate() {
-    }
-
-
 }
 
