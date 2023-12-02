@@ -1,4 +1,9 @@
+<<<<<<< Updated upstream
 14567;Toronto;12;6;2023;100;167
+=======
+1;Test;1;1;2025;100;100
+2;Test2;1;1;2026;100;0
+>>>>>>> Stashed changes
 17890;Guadeloupe;1;5;2024;200;340
 19012;Nouvelle-Orléans;3;5;2024;100;250
 22345;Martinique;25;7;2023;300;337
@@ -6,3 +11,7 @@
 36789;New-York;15;4;2024;100;67
 45678;Les Iles Baléares;6;5;2023;200;150
 53456;San Francisco;13;4;2002;300;327
+<<<<<<< Updated upstream
+=======
+123123;Listenbourg;16;12;2023;100;0
+>>>>>>> Stashed changes

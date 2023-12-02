@@ -36,10 +36,19 @@ public class GestionCompagnie {
                     compagnie.retirerVol(input);
                     break;
                 case "4":
+<<<<<<< Updated upstream
                     modifierDate();
                     break;
                 case "5":
                     reserverVol();
+=======
+                    input = JOptionPane.showInputDialog(null,"Numéro du vol:","MODIFICATION DE LA DATE DE DÉPART", JOptionPane.QUESTION_MESSAGE);
+                    compagnie.modifierDate(input);
+                    break;
+                case "5":
+                    input = JOptionPane.showInputDialog(null,"Numéro du vol:","RÉSERVATION D'UN VOL", JOptionPane.QUESTION_MESSAGE);
+                    compagnie.reserverVol(input);
+>>>>>>> Stashed changes
                     break;
                 case "0":
                     Utilitaires.displayMessage("Merci d'avoir utilisé notre application", compagnie.getNom());
