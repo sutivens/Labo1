@@ -1,8 +1,9 @@
 package org.example;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class Date {
+public class Date implements Serializable {
     private int jour;
     private int mois;
     private int an;
@@ -59,7 +60,7 @@ public class Date {
             }
 
         } else {
-            message += "Impossible de valider le jour puisque votre mois est invalide";
+            message += "Impossible de valider le jour puisque votre mois est invalide\n";
         }
 
         //Valider Année

@@ -1,6 +1,9 @@
 package org.example;
 
-public class Avion {
+import java.io.Serializable;
+
+// Je ne vois pas des instructions pour la manipulation de cette classe...
+public class Avion implements Serializable {
     private int numeroAvion;
     private String typeAvion;
     private int nombrePlaces;

@@ -1,6 +1,8 @@
 package org.example;
 
-public class Vol {
+import java.io.Serializable;
+
+public class Vol implements Comparable<Vol>, Serializable {
     private int numeroDuVol = 0;
     private String destination;
     private Date dateDepart;
@@ -45,5 +47,9 @@ public class Vol {
 
     public String toString() {
         return this.numeroDuVol + "\t" + Utilitaires.ajouterEspaces(30,this.destination,'F') + "\t" + this.dateDepart + "\t" + this.numeroAvion + "\t" + this.reservation + "\t";
+    }
+
+    public int compareTo(Vol unVol) {
+        return (int) (this.numeroDuVol - unVol.numeroDuVol);// En ordre croissant
     }
 }
